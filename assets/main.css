@@ -1,0 +1,118 @@
+body {
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        serif;
+}
+
+.wrapper {
+    margin: 0 auto;
+    max-width: 1280px;
+}
+
+.app-main--dropdown {
+    margin-bottom: 10px;
+}
+
+.app-main--dropdown-wrapper {
+    flex: 1;
+}
+
+.app-main--dropdown-title {
+    padding-left: 6px;
+    font-style: italic;
+}
+
+.app-main--cb-input {
+    margin-right: 0.5em;
+}
+
+P {
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+}
+
+.app-main--container {
+  border: 1px solid black;
+  border-radius: 0;
+  display: flex;
+}
+
+.app-main--panel-left {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+
+.app-main--panel-right {
+    flex: 4;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-main--panel-right-upper {
+    height: 710px;
+    padding: 10px;
+}
+
+.app-main--panel-right-lower {
+    flex: 1;
+    padding: 10px;
+}
+
+.app-main--filter-panel {
+    background-color: lightgrey;
+    padding: 0 10px;
+    border-radius: 0;
+    margin: 6px 0;
+}
+
+.app-main--genre-container {
+    flex: 1;
+}
+
+.app-main--container-title {
+    font-weight: 500;
+    font-size: 1.1rem;
+    font-variant: small-caps;
+}
+
+.app-main--genre-cb-container {
+    display: flex;
+    flex-direction: column;
+    height: 200px;
+    flex-wrap: wrap;
+}
+
+.app-main--rating-cb-container {
+    display: flex;
+    flex-direction: column;
+    height: 100px;
+    flex-wrap: wrap;
+}
+
+.app-main--year-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.app-main--year-selector {
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 0;
+}
+
+.app-main--cb-label {
+    padding: 6px 0;
+}
+
+.app-main--first-title {
+    background-color: #396362;
+    color: white;
+    padding: 10px;
+}
