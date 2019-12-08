@@ -21,5 +21,5 @@ Not yet deployed.
 5. Plots will be updated as per the selection by the user. 
 6. Barchart shows the gross revenues of the top 10 movies.  
 7. The scatterplot shows the  IMDB and Rotten Tomatoes ratings of all movies in the database, with the top 10 movies highlighted with colours matching the bars on the bar chart.  
-8. Both plots shows ooltips with relevant information.  
+8. Both plots show tooltips with relevant information.  
 9. Users can click on a bar in the bar chart and the respective movie in the scatterplot will be highlighted. This helps the user to compare the rating of his chosen movie to other movies.  
