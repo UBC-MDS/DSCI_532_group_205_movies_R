@@ -41,7 +41,19 @@ default_ratings = c("PG", "PG-13", "R")
 
 app$layout(
   htmlDiv(list(
+    # App Banner
     htmlDiv(list(
+      htmlH1("Seek-a-Movie", className = "display-3"),
+      htmlP("Interactive Movie Selector", className = "lead"),
+      htmlP("Displays the top 10 highest grossing US movies based on your taste.",
+            className = "lead"),
+      htmlP("Compare the IMDB and Rotten Tomaties ratings to help you decide what to watch!",
+            className = "lead")
+    ), className = "app-main--first-title row"),
+
+    # Main Container
+    htmlDiv(list(
+      # Left Panel
       htmlDiv(list(
         htmlDiv(list(
           htmlP("Genres", className="app-main--container-title"),
@@ -85,6 +97,7 @@ app$layout(
           ), className="app-main--year-selector")
         ), className = "app-main--year-container app-main--filter-panel")
       ), className = "app-main--panel-left"),
+      # Right Panel
       htmlDiv(list(
         htmlP('charts go here')
       ), className = "app-main--panel-right")
