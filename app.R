@@ -7,7 +7,16 @@ library(plotly)
 # Load assets
 app <- Dash$new(assets_folder = "assets")
 
-movies_df <- read_csv("data/movies.csv")
+# Prepare data
+movies_df <- read_csv("data/movies.csv",
+                      col_types = cols(MPAA_Rating = col_factor(),
+                                       Major_Genre = col_factor(),
+                                       Release_Year = col_integer())) %>%
+  mutate(Rotten_Tomatoes_Rating = as.integer(Rotten_Tomatoes_Rating))
+
+#
+# Set up options for filter controls
+#
 
 make_checklist_options <- function(values) {
   values %>%
@@ -38,6 +47,36 @@ year_options <- movies_df %>%
 #
 default_genres = c("Action", "Adventure", "Comedy", "Drama", "Horror", "Romantic Comedy", "Thriller/Suspense")
 default_ratings = c("PG", "PG-13", "R")
+default_from = 2000
+default_to = 2011
+
+filter_data <- function(genres, ratings, year_from, year_to) {
+  movies_df %>%
+    filter(Major_Genre %in% genres,
+           MPAA_Rating %in% ratings,
+           Release_Year >= year_from,
+           Release_Year <= year_to)
+}
+
+create_upper_chart <- function(df) {
+  p <- df %>%
+    group_by(Release_Year) %>%
+    summarize(US_Gross = sum(US_Gross) / 1e6) %>%
+    ggplot(aes(x = Release_Year, y = US_Gross)) +
+    geom_bar(stat = "identity")
+
+  ggplotly(p)
+}
+
+create_lower_chart <- function(df) {
+  p <- df %>%
+    group_by(Release_Year) %>%
+    summarize(US_Gross = sum(US_Gross) / 1e6) %>%
+    ggplot(aes(x = Release_Year, y = US_Gross)) +
+    geom_bar(stat = "identity")
+
+  ggplotly(p)
+}
 
 app$layout(
   htmlDiv(list(
@@ -82,7 +121,7 @@ app$layout(
               htmlP("from", className="app-main--dropdown-title"),
               dccDropdown(id="dd-year-from",
                           options = year_options,
-                          value = (year_options %>% first())$label,
+                          value = default_from,
                           className="app-main--dropdown",
                           clearable = FALSE)
             ), className="app-main--dropdown-wrapper"),
@@ -90,7 +129,7 @@ app$layout(
               htmlP("to", className="app-main--dropdown-title"),
               dccDropdown(id="dd-year-to",
                           options = year_options,
-                          value = (year_options %>% last())$label,
+                          value = default_to,
                           className="app-main--dropdown",
                           clearable = FALSE)
             ), className="app-main--dropdown-wrapper")
@@ -99,10 +138,41 @@ app$layout(
       ), className = "app-main--panel-left"),
       # Right Panel
       htmlDiv(list(
-        htmlP('charts go here')
+        htmlDiv(list(
+          dccGraph(id = "upper-graph")
+        ), className = "app-main--panel-right-upper"),
+        htmlDiv(list(
+          dccGraph(id = 'lower-graph')
+        ), className = "app-main--panel-right-lower")
       ), className = "app-main--panel-right")
     ), className = "app-main--container")
   ), className = "wrapper")
 )
+
+app$callback(
+  output=list(id = "upper-graph", property="figure"),
+
+  params=list(input(id = "cb-genres", property = "value"),
+              input(id = "cb-ratings", property = "value"),
+              input(id = "dd-year-from", property = "value"),
+              input(id = "dd-year-to", property = "value")),
+
+  function(genres, ratings, year_from, year_to) {
+    df <- filter_data(genres, ratings, year_from, year_to)
+    create_upper_chart(df)
+  })
+
+app$callback(
+  output=list(id = "lower-graph", property="figure"),
+
+  params=list(input(id = "cb-genres", property = "value"),
+              input(id = "cb-ratings", property = "value"),
+              input(id = "dd-year-from", property = "value"),
+              input(id = "dd-year-to", property = "value")),
+
+  function(genres, ratings, year_from, year_to) {
+    df <- filter_data(genres, ratings, year_from, year_to)
+    create_upper_chart(df)
+  })
 
 app$run_server()

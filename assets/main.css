@@ -16,7 +16,6 @@ h1 {
 
 .wrapper {
     margin: 0 auto;
-    max-width: 1280px;
 }
 
 .app-main--dropdown {
@@ -61,7 +60,7 @@ p {
 }
 
 .app-main--panel-right-upper {
-    height: 710px;
+    flex: 1;
     padding: 10px;
 }
 
