@@ -18,9 +18,11 @@ movies_df <- read_csv("data/movies.csv",
 # Set up options for filter controls
 #
 
-make_checklist_options <- function(values) {
-  values %>%
-    map(~ (list(label = ., value = .)))
+make_checklist_options <- function(values, labels = NULL) {
+  if (is_null(labels))
+    labels <- values
+
+  map2(labels, values, ~ (list(label = .x, value = .y)))
 }
 
 genre_options <- movies_df %>%
@@ -31,8 +33,13 @@ genre_options <- movies_df %>%
   sort() %>%
   make_checklist_options()
 
-ratings_options <- c("G", "PG", "PG-13", "R", "NC-17") %>%
-  make_checklist_options()
+ratings_options <- make_checklist_options(c("G", "PG", "PG-13", "R", "NC-17"),
+                                          c("G: General Audience",
+                                            "PG: Parental Guidance",
+                                            "PG-13: Parents Strongly Cautioned",
+                                            "R: Restricted",
+                                            "NC-17: Adults Only"))
+
 
 year_options <- movies_df %>%
   select("Release_Year") %>%
