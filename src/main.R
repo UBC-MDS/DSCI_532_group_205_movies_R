@@ -118,7 +118,9 @@ app$layout(
         ), className = "app-main--panel-left"),
         # Right Panel
         htmlDiv(list(
-          htmlDiv(className = "app-main--panel-right-upper", id = "upper-chart-div"),
+          htmlDiv(list(
+            dccGraph(id = 'upper-graph')
+          ), className = "app-main--panel-right-upper"),
           htmlDiv(list(
             dccGraph(id = 'lower-graph')
           ), className = "app-main--panel-right-lower")
@@ -129,7 +131,7 @@ app$layout(
 )
 
 app$callback(
-  output=list(id = "upper-chart-div", property="children"),
+  output=list(id = "upper-graph", property="figure"),
 
   params=list(input(id = "cb-genres", property = "value"),
               input(id = "cb-ratings", property = "value"),
@@ -137,16 +139,7 @@ app$callback(
 
   function(genres, ratings, year_range) {
     df <- filter_data(genres, ratings, year_range)
-
-    if (nrow(df) == 0) {
-      return (list(
-        htmlP("Your selection resulted in no data", className = "no-data"),
-      ))
-    }
-
-    list(
-      dccGraph(id = "upper-graph", figure = create_chart_1(df))
-    )
+    create_chart_1(df)
   })
 
 app$callback(
