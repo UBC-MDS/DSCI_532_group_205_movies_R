@@ -65,13 +65,19 @@ app$layout(
       htmlP("Interactive Movie Selector", className = "lead"),
       htmlP("Displays the top 10 highest grossing US movies based on your taste.",
             className = "lead"),
-      htmlP("Compare the IMDB and Rotten Tomaties ratings to help you decide what to watch!",
+      htmlP("Compare the IMDB and Rotten Tomatoes ratings to help you decide what to watch!",
             className = "lead")
     ), className = "app-main--first-title row"),
 
     # Main Container
     htmlDiv(list(
       htmlDiv(list(
+        htmlDiv(list(
+          htmlP(paste("Select a range for the release year of the movies using the Release Year range slider below.",
+                      "Then, adjust the Genres and the MPAA Ratings that you are interested in.")),
+          htmlP(paste("The upper chart will then show you the top 10 movies based on your selection criteria.",
+                      "The lower chart will show you how their IMDB and Rotten Tomatoes scores compare to all movies in the database."))
+        ), className = "app-main--instructions"),
         htmlDiv(list(
           htmlP("Release Year"),
           htmlDiv(list(

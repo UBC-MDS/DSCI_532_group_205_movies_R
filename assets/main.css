@@ -18,19 +18,6 @@ h1 {
     margin: 0 auto;
 }
 
-.app-main--dropdown {
-    margin-bottom: 10px;
-}
-
-.app-main--dropdown-wrapper {
-    flex: 1;
-}
-
-.app-main--dropdown-title {
-    padding-left: 6px;
-    font-style: italic;
-}
-
 .app-main--cb-input {
     margin-right: 0.5em;
 }
@@ -45,6 +32,10 @@ p {
   border-radius: 0;
   display: flex;
   flex-direction: column;
+}
+
+.app-main--instructions {
+  margin: 20px 18px;
 }
 
 .app-main--upper-controls {
@@ -113,17 +104,6 @@ p {
     flex-direction: column;
     /* height: 100px;
     flex-wrap: wrap; */
-}
-
-.app-main--year-container {
-    display: flex;
-    flex-direction: column;
-}
-
-.app-main--year-selector {
-    display: flex;
-    flex-direction: row;
-    flex-shrink: 0;
 }
 
 .app-main--cb-label {
