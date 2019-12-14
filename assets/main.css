@@ -44,6 +44,16 @@ p {
   border: 1px solid black;
   border-radius: 0;
   display: flex;
+  flex-direction: column;
+}
+
+.app-main--upper-controls {
+
+}
+
+.app-main--lower-content {
+  display: flex;
+  flex-direction: row;
 }
 
 .app-main--panel-left {
@@ -67,6 +77,11 @@ p {
 .app-main--panel-right-lower {
     flex: 1;
     padding: 10px;
+}
+
+.app-main--panel-bottom-inset {
+    /* border: 1px solid black; */
+    padding: 20px;
 }
 
 .app-main--filter-panel {
@@ -119,4 +134,12 @@ p {
     background-color: #396362;
     color: white;
     padding: 10px 16px;
+}
+
+.no-data-show {
+  border: 1px solid black;
+}
+
+.no-data-hide {
+  display: none;
 }

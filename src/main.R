@@ -49,12 +49,12 @@ default_ratings = c("PG", "PG-13", "R")
 default_from = 2000
 default_to = 2011
 
-filter_data <- function(genres, ratings, year_from, year_to) {
+filter_data <- function(genres, ratings, year_range) {
   movies_df %>%
     filter(Major_Genre %in% genres,
            MPAA_Rating %in% ratings,
-           Release_Year >= year_from,
-           Release_Year <= year_to)
+           Release_Year >= year_range[1],
+           Release_Year <= year_range[2])
 }
 
 app$layout(
@@ -71,74 +71,76 @@ app$layout(
 
     # Main Container
     htmlDiv(list(
-      # Left Panel
       htmlDiv(list(
         htmlDiv(list(
-          htmlP("Genres", className="app-main--container-title"),
-          dccChecklist(id="cb-genres",
-                       className="app-main--genre-cb-container",
-                       inputClassName="app-main--cb-input",
-                       labelClassName="app-main--cb-label",
-                       options = genre_options,
-                       value = default_genres)
-        ), className = "app-main--genre-container app-main--filter-panel"),
-        htmlDiv(list(
-          htmlP("MPAA Ratings", className="app-main--container-title"),
-          dccChecklist(
-            id="cb-ratings",
-            className="app-main--rating-cb-container",
-            inputClassName="app-main--cb-input",
-            labelClassName="app-main--cb-label",
-            options = ratings_options,
-            value = default_ratings
-          )
-        ), className = "app-main--rating-container app-main--filter-panel"),
-        htmlDiv(list(
-          htmlP("Release Year", className="app-main--container-title"),
+          htmlP("Release Year"),
           htmlDiv(list(
-            htmlDiv(list(
-              htmlP("from", className="app-main--dropdown-title"),
-              dccDropdown(id="dd-year-from",
-                          options = year_options,
-                          value = default_from,
-                          className="app-main--dropdown",
-                          clearable = FALSE)
-            ), className="app-main--dropdown-wrapper"),
-            htmlDiv(list(
-              htmlP("to", className="app-main--dropdown-title"),
-              dccDropdown(id="dd-year-to",
-                          options = year_options,
-                          value = default_to,
-                          className="app-main--dropdown",
-                          clearable = FALSE)
-            ), className="app-main--dropdown-wrapper")
-          ), className="app-main--year-selector")
-        ), className = "app-main--year-container app-main--filter-panel")
-      ), className = "app-main--panel-left"),
-      # Right Panel
+            dccRangeSlider(
+              id="release-year-range",
+              min = 1915,
+              max = 2011,
+              step = 1,
+              marks = seq(1915, 2011, 5) %>% as.list() %>% set_names(seq(1915, 2011, 5)),
+              value = c(2000, 2011)
+            )
+          ), className = "app-main--panel-bottom-inset")
+        ), className = "app-main--panel-bottom-inset")
+      ), className = "app-main--upper-controls"),
       htmlDiv(list(
+        # Left Panel
         htmlDiv(list(
-          dccGraph(id = "upper-graph")
-        ), className = "app-main--panel-right-upper"),
+          htmlDiv(list(
+            htmlP("Genres", className="app-main--container-title"),
+            dccChecklist(id="cb-genres",
+                         className="app-main--genre-cb-container",
+                         inputClassName="app-main--cb-input",
+                         labelClassName="app-main--cb-label",
+                         options = genre_options,
+                         value = default_genres)
+          ), className = "app-main--genre-container app-main--filter-panel"),
+          htmlDiv(list(
+            htmlP("MPAA Ratings", className="app-main--container-title"),
+            dccChecklist(
+              id="cb-ratings",
+              className="app-main--rating-cb-container",
+              inputClassName="app-main--cb-input",
+              labelClassName="app-main--cb-label",
+              options = ratings_options,
+              value = default_ratings
+            )
+          ), className = "app-main--rating-container app-main--filter-panel")
+        ), className = "app-main--panel-left"),
+        # Right Panel
         htmlDiv(list(
-          dccGraph(id = 'lower-graph')
-        ), className = "app-main--panel-right-lower")
-      ), className = "app-main--panel-right")
+          htmlDiv(className = "app-main--panel-right-upper", id = "upper-chart-div"),
+          htmlDiv(list(
+            dccGraph(id = 'lower-graph')
+          ), className = "app-main--panel-right-lower")
+        ), className = "app-main--panel-right")
+      ), className = "app-main--lower-content")
     ), className = "app-main--container")
   ), className = "wrapper")
 )
 
 app$callback(
-  output=list(id = "upper-graph", property="figure"),
+  output=list(id = "upper-chart-div", property="children"),
 
   params=list(input(id = "cb-genres", property = "value"),
               input(id = "cb-ratings", property = "value"),
-              input(id = "dd-year-from", property = "value"),
-              input(id = "dd-year-to", property = "value")),
+              input(id = "release-year-range", property = "value")),
 
-  function(genres, ratings, year_from, year_to) {
-    df <- filter_data(genres, ratings, year_from, year_to)
-    create_chart_1(df)
+  function(genres, ratings, year_range) {
+    df <- filter_data(genres, ratings, year_range)
+
+    if (nrow(df) == 0) {
+      return (list(
+        htmlP("Your selection resulted in no data", className = "no-data"),
+      ))
+    }
+
+    list(
+      dccGraph(id = "upper-graph", figure = create_chart_1(df))
+    )
   })
 
 app$callback(
@@ -146,10 +148,9 @@ app$callback(
 
   params=list(input(id = "cb-genres", property = "value"),
               input(id = "cb-ratings", property = "value"),
-              input(id = "dd-year-from", property = "value"),
-              input(id = "dd-year-to", property = "value")),
+              input(id = "release-year-range", property = "value")),
 
-  function(genres, ratings, year_from, year_to) {
-    df <- filter_data(genres, ratings, year_from, year_to)
+  function(genres, ratings, year_range) {
+    df <- filter_data(genres, ratings, year_range)
     create_chart_2(df)
   })
