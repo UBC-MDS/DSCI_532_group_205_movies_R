@@ -15,13 +15,13 @@ create_chart_2 <- function(df, y, movies_df) {
 
   p1 <- ggplot() +
     geom_hex(data = movies_df, aes(x = IMDB_Rating,
-                              y = Rotten_Tomatoes_Rating),
-              alpha = 0.5,
-              bins = 20) +
-    scale_fill_distiller(palette ="Purples", direction = -1) +
+                                   y = Rotten_Tomatoes_Rating),
+              alpha = 0.8,
+              bins = 30) +
+    scale_fill_distiller(palette ="Purples", direction = 1) +
     geom_point(aes(x = IMDB_Rating, y = Rotten_Tomatoes_Rating), top_us_gross_df, size = 4, colour = "#396362") +
     geom_point(aes(x = IMDB_Rating, y = Rotten_Tomatoes_Rating), selected_movie, size = 6, colour = "red") +
-    theme_minimal() +
+    theme_bw() +
     labs(x = "IMDB Rating",
          y = "Rotten Tomatoes Rating") +
     ggtitle("Movie Ratings")
