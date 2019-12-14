@@ -5,7 +5,8 @@ movies_df = read_csv("data/movies.csv",
                      col_types = cols(MPAA_Rating = col_factor(),
                                       Major_Genre = col_factor(),
                                       Release_Year = col_integer())) %>%
-  mutate(Rotten_Tomatoes_Rating = as.integer(Rotten_Tomatoes_Rating))
+  mutate(Rotten_Tomatoes_Rating = as.integer(Rotten_Tomatoes_Rating),
+         US_Gross_per_million = round(US_Gross / 1e6, 2))
 
 #
 # Set up options for filter controls
