@@ -11,7 +11,7 @@ Based on the selection made by the user, the app will find the top 10 grossing U
 !["sketch"](img/app_sketch.png) 
 
 ## Link to the deployed app:  
-https://mds-4-group-205-movies-dashr.herokuapp.com
+https://mds-4-group-205-movies-dashr.herokuapp.com 
 
 ## Functionalities of the app  
 1. The app shows the top 10 grossing US movies and the IMDB and Rotten Tomatoes ratings,  filtered by genre, rating and release year specified by the user.   
