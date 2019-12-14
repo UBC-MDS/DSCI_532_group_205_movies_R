@@ -10,11 +10,13 @@ create_chart_2 <- function(df, y, movies_df) {
                               y = Rotten_Tomatoes_Rating),
               alpha = 0.5,
               bins = 20) +
-    scale_fill_distiller(palette ="Greens", direction = -1) +
-
-
-    geom_point(aes(x = IMDB_Rating, y = Rotten_Tomatoes_Rating), top_us_gross_df, size = 2) +
-    geom_point(aes(x = IMDB_Rating, y = Rotten_Tomatoes_Rating), selected_movie, size = 4, colour = "#396362")
+    scale_fill_distiller(palette ="Purples", direction = -1) +
+    geom_point(aes(x = IMDB_Rating, y = Rotten_Tomatoes_Rating), top_us_gross_df, size = 4, colour = "#396362") +
+    geom_point(aes(x = IMDB_Rating, y = Rotten_Tomatoes_Rating), selected_movie, size = 6, colour = "red") +
+    theme_minimal() +
+    labs(x = "IMDB Rating",
+         y = "Rotten Tomatoes Rating") +
+    ggtitle("Movie Ratings")
 
  
   ggplotly(p1)
