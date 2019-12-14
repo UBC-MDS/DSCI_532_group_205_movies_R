@@ -48,7 +48,8 @@ app$callback(
     y <- 10 - click_data$points[[1]]$pointIndex
 
     df <- filter_data(genres, ratings, year_range)
-    create_chart_2(df, y)
+    movies_df <- get_full_data()
+    create_chart_2(df, y, movies_df)
   })
 
 
