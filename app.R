@@ -4,6 +4,7 @@ library(dashHtmlComponents)
 library(tidyverse)
 library(plotly)
 
+setwd("/app")
 source("src/chart_1.R")
 source("src/chart_2.R")
 source("src/main.R")
