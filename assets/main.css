@@ -18,19 +18,6 @@ h1 {
     margin: 0 auto;
 }
 
-.app-main--dropdown {
-    margin-bottom: 10px;
-}
-
-.app-main--dropdown-wrapper {
-    flex: 1;
-}
-
-.app-main--dropdown-title {
-    padding-left: 6px;
-    font-style: italic;
-}
-
 .app-main--cb-input {
     margin-right: 0.5em;
 }
@@ -40,10 +27,28 @@ p {
     margin-block-end: 0.5em;
 }
 
+.italic {
+  font-style: italic;
+}
+
 .app-main--container {
   border: 1px solid black;
   border-radius: 0;
   display: flex;
+  flex-direction: column;
+}
+
+.app-main--instructions {
+  margin: 20px 18px;
+}
+
+.app-main--upper-controls {
+
+}
+
+.app-main--lower-content {
+  display: flex;
+  flex-direction: row;
 }
 
 .app-main--panel-left {
@@ -67,6 +72,11 @@ p {
 .app-main--panel-right-lower {
     flex: 1;
     padding: 10px;
+}
+
+.app-main--panel-bottom-inset {
+    /* border: 1px solid black; */
+    padding: 20px;
 }
 
 .app-main--filter-panel {
@@ -100,17 +110,6 @@ p {
     flex-wrap: wrap; */
 }
 
-.app-main--year-container {
-    display: flex;
-    flex-direction: column;
-}
-
-.app-main--year-selector {
-    display: flex;
-    flex-direction: row;
-    flex-shrink: 0;
-}
-
 .app-main--cb-label {
     padding: 6px 0;
 }
@@ -119,4 +118,12 @@ p {
     background-color: #396362;
     color: white;
     padding: 10px 16px;
+}
+
+.no-data-show {
+  border: 1px solid black;
+}
+
+.no-data-hide {
+  display: none;
 }

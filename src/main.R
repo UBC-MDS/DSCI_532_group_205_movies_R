@@ -5,7 +5,8 @@ movies_df = read_csv("data/movies.csv",
                      col_types = cols(MPAA_Rating = col_factor(),
                                       Major_Genre = col_factor(),
                                       Release_Year = col_integer())) %>%
-  mutate(Rotten_Tomatoes_Rating = as.integer(Rotten_Tomatoes_Rating))
+  mutate(Rotten_Tomatoes_Rating = as.integer(Rotten_Tomatoes_Rating),
+         US_Gross_per_million = round(US_Gross / 1e6, 2))
 
 #
 # Set up options for filter controls
@@ -49,12 +50,12 @@ default_ratings = c("PG", "PG-13", "R")
 default_from = 2000
 default_to = 2011
 
-filter_data <- function(genres, ratings, year_from, year_to) {
+filter_data <- function(genres, ratings, year_range) {
   movies_df %>%
     filter(Major_Genre %in% genres,
            MPAA_Rating %in% ratings,
-           Release_Year >= year_from,
-           Release_Year <= year_to)
+           Release_Year >= year_range[1],
+           Release_Year <= year_range[2])
 }
 
 app$layout(
@@ -65,66 +66,73 @@ app$layout(
       htmlP("Interactive Movie Selector", className = "lead"),
       htmlP("Displays the top 10 highest grossing US movies based on your taste.",
             className = "lead"),
-      htmlP("Compare the IMDB and Rotten Tomaties ratings to help you decide what to watch!",
+      htmlP("Compare the IMDB and Rotten Tomatoes ratings to help you decide what to watch!",
             className = "lead")
     ), className = "app-main--first-title row"),
 
     # Main Container
     htmlDiv(list(
-      # Left Panel
       htmlDiv(list(
         htmlDiv(list(
-          htmlP("Genres", className="app-main--container-title"),
-          dccChecklist(id="cb-genres",
-                       className="app-main--genre-cb-container",
-                       inputClassName="app-main--cb-input",
-                       labelClassName="app-main--cb-label",
-                       options = genre_options,
-                       value = default_genres)
-        ), className = "app-main--genre-container app-main--filter-panel"),
+          htmlUl(list(
+            htmlLi(htmlP("Select a range for the release year of the movies using the Release Year range slider below.")),
+            htmlLi(htmlP("Adjust the Genres and the MPAA Ratings that you are interested in.")),
+            htmlLi(htmlP("The upper chart will show you the top 10 movies based on your selection criteria.")),
+            htmlLi(htmlP("The lower chart will show you how their IMDB and Rotten Tomatoes scores compare to all movies in the database.")),
+            htmlLi(htmlP("Select a movie from the barchart to help you find it in the Movie Ratings scatter plot.", className = "italic"))
+          ))
+        ), className = "app-main--instructions"),
         htmlDiv(list(
-          htmlP("MPAA Ratings", className="app-main--container-title"),
-          dccChecklist(
-            id="cb-ratings",
-            className="app-main--rating-cb-container",
-            inputClassName="app-main--cb-input",
-            labelClassName="app-main--cb-label",
-            options = ratings_options,
-            value = default_ratings
-          )
-        ), className = "app-main--rating-container app-main--filter-panel"),
-        htmlDiv(list(
-          htmlP("Release Year", className="app-main--container-title"),
+          htmlP("Release Year"),
           htmlDiv(list(
-            htmlDiv(list(
-              htmlP("from", className="app-main--dropdown-title"),
-              dccDropdown(id="dd-year-from",
-                          options = year_options,
-                          value = default_from,
-                          className="app-main--dropdown",
-                          clearable = FALSE)
-            ), className="app-main--dropdown-wrapper"),
-            htmlDiv(list(
-              htmlP("to", className="app-main--dropdown-title"),
-              dccDropdown(id="dd-year-to",
-                          options = year_options,
-                          value = default_to,
-                          className="app-main--dropdown",
-                          clearable = FALSE)
-            ), className="app-main--dropdown-wrapper")
-          ), className="app-main--year-selector")
-        ), className = "app-main--year-container app-main--filter-panel")
-      ), className = "app-main--panel-left"),
-      # Right Panel
+            dccRangeSlider(
+              id="release-year-range",
+              min = 1915,
+              max = 2011,
+              step = 1,
+              marks = seq(1915, 2011, 5) %>% as.list() %>% set_names(seq(1915, 2011, 5)),
+              value = c(2000, 2011)
+            )
+          ), className = "app-main--panel-bottom-inset")
+        ), className = "app-main--panel-bottom-inset")
+      ), className = "app-main--upper-controls"),
       htmlDiv(list(
+        # Left Panel
         htmlDiv(list(
-          dccGraph(id = "upper-graph")
-        ), className = "app-main--panel-right-upper"),
+          htmlDiv(list(
+            htmlP("Genres", className="app-main--container-title"),
+            dccChecklist(id="cb-genres",
+                         className="app-main--genre-cb-container",
+                         inputClassName="app-main--cb-input",
+                         labelClassName="app-main--cb-label",
+                         options = genre_options,
+                         value = default_genres)
+          ), className = "app-main--genre-container app-main--filter-panel"),
+          htmlDiv(list(
+            htmlP("MPAA Ratings", className="app-main--container-title"),
+            dccChecklist(
+              id="cb-ratings",
+              className="app-main--rating-cb-container",
+              inputClassName="app-main--cb-input",
+              labelClassName="app-main--cb-label",
+              options = ratings_options,
+              value = default_ratings
+            )
+          ), className = "app-main--rating-container app-main--filter-panel")
+        ), className = "app-main--panel-left"),
+        # Right Panel
         htmlDiv(list(
-          dccGraph(id = 'lower-graph')
-        ), className = "app-main--panel-right-lower")
-      ), className = "app-main--panel-right")
-    ), className = "app-main--container")
+          htmlDiv(list(
+            dccGraph(id = 'upper-graph')
+          ), className = "app-main--panel-right-upper"),
+          htmlDiv(list(
+            dccGraph(id = 'lower-graph')
+          ), className = "app-main--panel-right-lower")
+        ), className = "app-main--panel-right")
+      ), className = "app-main--lower-content")
+    ), className = "app-main--container"),
+    htmlA(htmlP("The data for this app comes from the Vega datasets project at github.com/vega/vega-datasets"),
+          href = "https://github.com/vega/vega-datasets")
   ), className = "wrapper")
 )
 
@@ -133,11 +141,10 @@ app$callback(
 
   params=list(input(id = "cb-genres", property = "value"),
               input(id = "cb-ratings", property = "value"),
-              input(id = "dd-year-from", property = "value"),
-              input(id = "dd-year-to", property = "value")),
+              input(id = "release-year-range", property = "value")),
 
-  function(genres, ratings, year_from, year_to) {
-    df <- filter_data(genres, ratings, year_from, year_to)
+  function(genres, ratings, year_range) {
+    df <- filter_data(genres, ratings, year_range)
     create_chart_1(df)
   })
 
@@ -146,10 +153,13 @@ app$callback(
 
   params=list(input(id = "cb-genres", property = "value"),
               input(id = "cb-ratings", property = "value"),
-              input(id = "dd-year-from", property = "value"),
-              input(id = "dd-year-to", property = "value")),
+              input(id = "release-year-range", property = "value"),
+              input(id = "upper-graph", property = "clickData")),
 
-  function(genres, ratings, year_from, year_to) {
-    df <- filter_data(genres, ratings, year_from, year_to)
-    create_chart_2(df)
+  function(genres, ratings, year_range, click_data) {
+    # Ranking is reversed. The first data point is movie #10, 10th is movie #1
+    y <- 10 - click_data$points[[1]]$pointIndex
+
+    df <- filter_data(genres, ratings, year_range)
+    create_chart_2(df, y)
   })
