@@ -1,4 +1,4 @@
-create_chart_2 <- function(df, y) {
+create_chart_2 <- function(df, y, movies_df) {
   top_us_gross_df <- df %>%
     arrange(desc(US_Gross)) %>%
     head(10)

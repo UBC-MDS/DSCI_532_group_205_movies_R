@@ -60,6 +60,10 @@ filter_data <- function(genres, ratings, year_range) {
            Release_Year <= year_range[2])
 }
 
+get_full_data <- function() {
+  movies_df
+}
+
 app$layout(
   htmlDiv(list(
     # App Banner
@@ -163,5 +167,6 @@ app$callback(
     y <- 10 - click_data$points[[1]]$pointIndex
 
     df <- filter_data(genres, ratings, year_range)
-    create_chart_2(df, y)
+    movies_df <- get_full_data()
+    create_chart_2(df, y, movies_df)
   })
