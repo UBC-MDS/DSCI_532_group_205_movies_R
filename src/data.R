@@ -49,6 +49,10 @@ make_checklist_options <- function(values, labels = NULL) {
   map2(labels, values, ~ (list(label = .x, value = .y)))
 }
 
+#' Get the unfiltered dataset
+#'
+#' @return unfiltered dataset
+#'
 get_full_data <- function() {
    movies_df
 }

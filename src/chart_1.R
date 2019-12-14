@@ -1,4 +1,10 @@
-create_chart_1 <- function(df, y = NULL) {
+#' Chart 1 - Upper barchart with Top 10 US grossing movies
+#'
+#' @param df The filtered dataframe based on user's criteria
+#'
+#' @return Plotly chart
+#'
+create_chart_1 <- function(df) {
   top_us_gross_df <- df %>%
     arrange(desc(US_Gross)) %>%
     head(10)
