@@ -38,7 +38,7 @@ get_layout <- function() {
           htmlP("Release Year"),
           htmlDiv(list(
             dccRangeSlider(
-              id="release-year-range",
+              id = "release-year-range",
               min = 1915,
               max = 2011,
               step = 1,
@@ -52,21 +52,21 @@ get_layout <- function() {
         # Left Panel
         htmlDiv(list(
           htmlDiv(list(
-            htmlP("Genres", className="app-main--container-title"),
+            htmlP("Genres", className = "app-main--container-title"),
             dccChecklist(id="cb-genres",
-                         className="app-main--genre-cb-container",
-                         inputClassName="app-main--cb-input",
-                         labelClassName="app-main--cb-label",
+                         className = "app-main--genre-cb-container",
+                         inputClassName = "app-main--cb-input",
+                         labelClassName = "app-main--cb-label",
                          options = genre_options,
                          value = default_genres)
           ), className = "app-main--genre-container app-main--filter-panel"),
           htmlDiv(list(
             htmlP("MPAA Ratings", className="app-main--container-title"),
             dccChecklist(
-              id="cb-ratings",
-              className="app-main--rating-cb-container",
-              inputClassName="app-main--cb-input",
-              labelClassName="app-main--cb-label",
+              id = "cb-ratings",
+              className = "app-main--rating-cb-container",
+              inputClassName = "app-main--cb-input",
+              labelClassName = "app-main--cb-label",
               options = ratings_options,
               value = default_ratings
             )
