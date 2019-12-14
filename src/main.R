@@ -74,10 +74,13 @@ app$layout(
     htmlDiv(list(
       htmlDiv(list(
         htmlDiv(list(
-          htmlP(paste("Select a range for the release year of the movies using the Release Year range slider below.",
-                      "Then, adjust the Genres and the MPAA Ratings that you are interested in.")),
-          htmlP(paste("The upper chart will then show you the top 10 movies based on your selection criteria.",
-                      "The lower chart will show you how their IMDB and Rotten Tomatoes scores compare to all movies in the database."))
+          htmlUl(list(
+            htmlLi(htmlP("Select a range for the release year of the movies using the Release Year range slider below.")),
+            htmlLi(htmlP("Adjust the Genres and the MPAA Ratings that you are interested in.")),
+            htmlLi(htmlP("The upper chart will show you the top 10 movies based on your selection criteria.")),
+            htmlLi(htmlP("The lower chart will show you how their IMDB and Rotten Tomatoes scores compare to all movies in the database.")),
+            htmlLi(htmlP("Select a movie from the barchart to help you find it in the Movie Ratings scatter plot.", className = "italic"))
+          ))
         ), className = "app-main--instructions"),
         htmlDiv(list(
           htmlP("Release Year"),

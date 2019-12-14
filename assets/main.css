@@ -27,6 +27,10 @@ p {
     margin-block-end: 0.5em;
 }
 
+.italic {
+  font-style: italic;
+}
+
 .app-main--container {
   border: 1px solid black;
   border-radius: 0;
