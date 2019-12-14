@@ -25,5 +25,6 @@ create_chart_1 <- function(df) {
            title = "Highest Grossing US Movies") +
      theme_bw()
 
-  ggplotly(p)
+  ggplotly(p) %>%
+    layout(clickmode = 'event+select')
 }

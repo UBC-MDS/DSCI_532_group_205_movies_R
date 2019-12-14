@@ -148,9 +148,13 @@ app$callback(
 
   params=list(input(id = "cb-genres", property = "value"),
               input(id = "cb-ratings", property = "value"),
-              input(id = "release-year-range", property = "value")),
+              input(id = "release-year-range", property = "value"),
+              input(id = "upper-graph", property = "clickData")),
 
-  function(genres, ratings, year_range) {
+  function(genres, ratings, year_range, click_data) {
+    # Ranking is reversed. The first data point is movie #10, 10th is movie #1
+    y <- 10 - click_data$points[[1]]$pointIndex
+
     df <- filter_data(genres, ratings, year_range)
-    create_chart_2(df)
+    create_chart_2(df, y)
   })

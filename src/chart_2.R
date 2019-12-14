@@ -1,4 +1,4 @@
-create_chart_2 <- function(df) {
+create_chart_2 <- function(df, y) {
   p <- df %>%
     group_by(Release_Year) %>%
     summarize(US_Gross = sum(US_Gross) / 1e6) %>%
