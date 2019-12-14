@@ -12,8 +12,6 @@ handle the usage scenario that we set out to achieve. We now reflect upon our co
 
 ## Limitations
 
-- Our app does not have the interactivity between the two plots that we proposed. This is partly due to the time constraints for the project and based on our discussion with the course instructor.  
-
 - Apart from the movie name, the app does not provide information about the cast, story, etc. Moreover, it only shows the movies from Hollywood, which may not be useful for everyone. 
 
 - Our app is unable to hide the plot controls that appear on the top right corner of the plot. This is apparently a known issue with the more recent versions of plotly.
