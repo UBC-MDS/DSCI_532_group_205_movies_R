@@ -1,47 +1,3 @@
-# Load assets
-app <- Dash$new(assets_folder = "assets")
-
-movies_df = read_csv("data/movies.csv",
-                     col_types = cols(MPAA_Rating = col_factor(),
-                                      Major_Genre = col_factor(),
-                                      Release_Year = col_integer())) %>%
-  mutate(Rotten_Tomatoes_Rating = as.integer(Rotten_Tomatoes_Rating),
-         US_Gross_per_million = round(US_Gross / 1e6, 2))
-
-#
-# Set up options for filter controls
-#
-
-make_checklist_options <- function(values, labels = NULL) {
-  if (is_null(labels))
-    labels <- values
-
-  map2(labels, values, ~ (list(label = .x, value = .y)))
-}
-
-genre_options <- movies_df %>%
-  select("Major_Genre") %>%
-  na.omit() %>%
-  unique() %>%
-  pull("Major_Genre") %>%
-  sort() %>%
-  make_checklist_options()
-
-ratings_options <- make_checklist_options(c("G", "PG", "PG-13", "R", "NC-17"),
-                                          c("G: General Audience",
-                                            "PG: Parental Guidance",
-                                            "PG-13: Parents Strongly Cautioned",
-                                            "R: Restricted",
-                                            "NC-17: Adults Only"))
-
-year_options <- movies_df %>%
-  select("Release_Year") %>%
-  na.omit() %>%
-  unique() %>%
-  pull("Release_Year") %>%
-  sort() %>%
-  make_checklist_options()
-
 #
 # Default values for filters
 #
@@ -50,15 +6,11 @@ default_ratings = c("PG", "PG-13", "R")
 default_from = 2000
 default_to = 2011
 
-filter_data <- function(genres, ratings, year_range) {
-  movies_df %>%
-    filter(Major_Genre %in% genres,
-           MPAA_Rating %in% ratings,
-           Release_Year >= year_range[1],
-           Release_Year <= year_range[2])
-}
-
-app$layout(
+#' The DashR layout for the app
+#'
+#' @return DashR layout
+#'
+get_layout <- function() {
   htmlDiv(list(
     # App Banner
     htmlDiv(list(
@@ -134,32 +86,4 @@ app$layout(
     htmlA(htmlP("The data for this app comes from the Vega datasets project at github.com/vega/vega-datasets"),
           href = "https://github.com/vega/vega-datasets")
   ), className = "wrapper")
-)
-
-app$callback(
-  output=list(id = "upper-graph", property="figure"),
-
-  params=list(input(id = "cb-genres", property = "value"),
-              input(id = "cb-ratings", property = "value"),
-              input(id = "release-year-range", property = "value")),
-
-  function(genres, ratings, year_range) {
-    df <- filter_data(genres, ratings, year_range)
-    create_chart_1(df)
-  })
-
-app$callback(
-  output=list(id = "lower-graph", property="figure"),
-
-  params=list(input(id = "cb-genres", property = "value"),
-              input(id = "cb-ratings", property = "value"),
-              input(id = "release-year-range", property = "value"),
-              input(id = "upper-graph", property = "clickData")),
-
-  function(genres, ratings, year_range, click_data) {
-    # Ranking is reversed. The first data point is movie #10, 10th is movie #1
-    y <- 10 - click_data$points[[1]]$pointIndex
-
-    df <- filter_data(genres, ratings, year_range)
-    create_chart_2(df, y)
-  })
+}
