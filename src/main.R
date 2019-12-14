@@ -130,7 +130,9 @@ app$layout(
           ), className = "app-main--panel-right-lower")
         ), className = "app-main--panel-right")
       ), className = "app-main--lower-content")
-    ), className = "app-main--container")
+    ), className = "app-main--container"),
+    htmlA(htmlP("The data for this app comes from the Vega datasets project at github.com/vega/vega-datasets"),
+          href = "https://github.com/vega/vega-datasets")
   ), className = "wrapper")
 )
 
