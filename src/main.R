@@ -6,7 +6,9 @@ movies_df = read_csv("data/movies.csv",
                                       Major_Genre = col_factor(),
                                       Release_Year = col_integer())) %>%
   mutate(Rotten_Tomatoes_Rating = as.integer(Rotten_Tomatoes_Rating),
-         US_Gross_per_million = round(US_Gross / 1e6, 2))
+          US_Gross_per_million = round(US_Gross / 1e6, 2)) %>%
+  select(Title, MPAA_Rating, Major_Genre, Release_Year, US_Gross, US_Gross_per_million, Rotten_Tomatoes_Rating, IMDB_Rating) %>%
+  drop_na()
 
 #
 # Set up options for filter controls
