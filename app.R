@@ -1,7 +1,10 @@
 library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
-library(tidyverse)
+library(ggplot2)
+library(readr)
+library(purrr)
+library(dplyr)
 library(plotly)
 
 setwd("/app")
